@@ -3,6 +3,17 @@
 ## About Project
 
 This project provides a job searching portal. UI consists of filter options and job cards with infinite scroll.
+
+
+Each job cards will contains the following information:
+- Job title
+- Company name
+- Location
+- Job description (limited to a certain number of characters with an option to expand)
+- Experience required
+- Apply button/link
+
+
 Filter options includes 
 - Minimum experience
 - Company name
