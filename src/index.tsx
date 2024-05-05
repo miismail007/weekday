@@ -1,6 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import React from 'react'
 import initializeComponent from './weekDay';
+import Button from '@mui/material/Button';
+import App from './App';
+import StoreProvider from './StoreProvider';
 let dd = initializeComponent;
 
 declare global {
@@ -12,6 +15,6 @@ export default function mount() {
     if(element){
         const root :any =  createRoot(element!)
         window.weekEndRoot = root;
-        root.render(<div>WeekDay</div>)
+        root.render(<StoreProvider/>)
     }
 }
