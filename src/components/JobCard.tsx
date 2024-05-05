@@ -3,12 +3,14 @@ import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import React from 'react'
 import { Box } from '@mui/system';
 import Button from '@mui/material/Button';
+import { getCurrencySymbol, htmlDecode } from '../utills/helperFunctions';
+import { JdItem } from '../utills/types';
 
 function JobCard({filteredData}) {
     const jdList = filteredData
     return (
         <Grid container spacing={3} sx={{mt: 5}}>
-            {jdList.map(listItem => 
+            {jdList.map((listItem: JdItem) => 
                 <Grid item xs={4} key={listItem.jdUid}>
                     <Paper elevation={2} sx={{p : 2,borderRadius: 5, ':hover' : { boxShadow: 4}}}>
                         <Chip 
@@ -26,7 +28,7 @@ function JobCard({filteredData}) {
                                 </Box>
                             </Box>
                         </Box>
-                        <Typography mx={1} variant='body2'>{`Estimated Salary: ₹${listItem.minJdSalary} - ${listItem.maxJdSalary} LPA ✅`}</Typography>
+                        <Typography mx={1} variant='body2'>{`Estimated Salary: ${htmlDecode(getCurrencySymbol(listItem.salaryCurrencyCode))}${listItem.minJdSalary} - ${listItem.maxJdSalary} LPA ✅`}</Typography>
                         <Box sx={{ height: 250,overflow: "hidden", display: 'flex', flexDirection: 'column', my: 1, maskImage: 'linear-gradient(to bottom, #fff, #fff, #fff0)'}}>
                             <Typography mx={1} variant='body1'>About Company:</Typography>
                             <Typography mx={1} variant='body1' sx={{fontWeight: 400}}>About Us:</Typography>

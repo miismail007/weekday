@@ -2,6 +2,7 @@ import { setLoader } from "../redux/slices/additionalSlice";
 import { setJdList, setJdListCount, setOffset } from "../redux/slices/jobListslice";
 import { store } from "../redux/store/store";
 import { JdItem } from "./types";
+import CurrencyCodes from './currencyCodes.json'
 
 export function triggerListener(){
     window.addEventListener('scroll', scrollEvent);
@@ -42,7 +43,13 @@ export async function getData(){
         fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions)
         .then((response) => response.json())
         .then((result) => {
-            store.dispatch(setJdList([...jdList,...result.jdList]))
+            const listWithNoNull = result.jdList.filter(listItem => {
+                if(listItem.maxJdSalary != null && listItem.minJdSalary != null &&
+                    listItem.minExp != null && listItem.maxExp != null){
+                        return true
+                }
+            })
+            store.dispatch(setJdList([...jdList,...listWithNoNull]))
             store.dispatch(setJdListCount(result.totalCount))
             store.dispatch(setOffset(offset + 10))
             store.dispatch(setLoader(false))
@@ -79,3 +86,19 @@ export function filterJobs(){
     }
     return filteredJobs
 }
+
+export const htmlDecode = (value: any) => {
+    let currency = new DOMParser().parseFromString(value, 'text/html')
+    return currency.documentElement.textContent
+}
+
+export const getCurrencySymbol = (currencyCode: any) => {
+    let currencySymbol;
+    try {
+        currencySymbol = (CurrencyCodes as any)[`${currencyCode}`]?.currencySymbol;
+    } catch (err) {
+        currencySymbol = currencyCode;
+        console.log(err)
+    }
+    return (currencySymbol === null || currencyCode === undefined)? currencyCode: currencySymbol;
+};
